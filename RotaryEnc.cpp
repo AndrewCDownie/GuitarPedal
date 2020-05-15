@@ -1,29 +1,55 @@
 #include "RotaryEnc.h"
-RotaryEnc::RotaryEnc(int inputA, int inputB, int button){
-	inputPinA = inputA;
-	inputPinB = inputB;
-	buttonPin = button;
-	counter = 0;
-	pinMode(inputPinA,INPUT);
-	pinMode(inputPinB,INPUT);
-	pinMode(buttonPin,INPUT);
-	active = false;
-	aLastState = digitalRead(inputPinA);
+#include "arduino.h"
+
+
+/*
+ * 
+ * Copy this into the file to use the encoders
+int state = 0;
+void counter_interupt(){
+  if(digitalRead(3) == 0){
+    for(int i = 0; i<3; i++){
+      encoders[i]->tickUp();
+    }
+  }else{
+    for(int i = 0; i<3; i++){
+      encoders[i]->tickDown();
+    }
+  }
+} 
+ */
+
+
+RotaryEnc::RotaryEnc(char * title_,int Lb_,int Ub_,int diff_){
+	title = title_;
+	Lb = Lb_;
+	Ub = Ub_;
+	active = true;
+  counter = 0;
+  diff = diff_;
 }
 
-void RotaryEnc::update(){
+void RotaryEnc::tickUp(){
 	if(active){
-		aState = digitalRead(inputPinA);
-		if(aState != aLastState){
-			if(digitalRead(inputPinB) !=aState){
-				counter +=1;
-			}else{
-				counter += -1;
-			}
-			aLastState = aState;
+		if(counter >= Ub){
+				counter = Ub;
+		}else{
+			counter +=diff;
 		}
 	}
 }
+
+void RotaryEnc::tickDown(){
+	if(active){
+		if(counter <= Lb){
+				counter = Lb;
+		}else{
+			counter -=diff;
+		}
+}
+}
+
+
 void RotaryEnc::setActive(bool state){
 	active = state;
 

@@ -6,21 +6,19 @@
 
 class RotaryEnc
 {
-	public: 
-		RotaryEnc(int input_a,int input_b, int button);
+	public:
+		RotaryEnc(char * title_,int Lb_, int Ub_,int diff_);
 		void setActive(bool state);
-		int getCounter();	
-		void update();
+		int getCounter();
+		void tickUp();
+		void tickDown();
+    char * title;
 	private:
-		int aState;
-		int aLastState;
-		int bState;
-		int buttonState;
 		bool active;
-		int inputPinA;
-		int inputPinB;
-		int buttonPin;
 		int counter;
+		int Ub;
+		int Lb;
+    int diff;
 };
 
 #endif
